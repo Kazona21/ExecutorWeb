@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executor Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Executor Dashboard</h1>
+        
+        <!-- Console Panel -->
+        <div class="console-panel">
+            <div class="console-header">
+                <h3>Console Log</h3>
+                <div class="console-controls">
+                    <button id="clear-console" title="Clear console"><i class="fas fa-trash"></i></button>
+                    <button id="toggle-console" title="Toggle console"><i class="fas fa-chevron-down"></i></button>
+                </div>
+            </div>
+            <div class="console-body" id="console-body">
+                <div class="console-message system">
+                    <span class="timestamp">[10:45:22]</span>
+                    <span class="message-text">System initialized. Waiting for API updates...</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats-container">
+            <div class="stat-box total-executors">
+                <h2>Total Executors</h2>
+                <p id="total-count">Loading...</p>
+            </div>
+            <div class="stat-box online-executors">
+                <h2>Online Executors</h2>
+                <p id="online-count">Loading...</p>
+            </div>
+        </div>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search executors...">
+        </div>
+        <div class="executors-container" id="executors-list">
+            <!-- Executors will be loaded here -->
+            <p class="loading">Loading executors...</p>
+        </div>
+        
+        <footer class="site-footer">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-text">Executor Dashboard</span>
+                </div>
+                <div class="footer-credits">
+                    <span><i class="fas fa-code pulse"> </i> with by <span class="dev-name">Kazona</span></span>
+                    <span class="separator"></span>
+                </div>
+                <p class="footer-tagline">Empowering developers with real-time executor monitoring and management</p>
+                <div class="footer-links">
+                    <a href="#" onclick="showModal('contact')"><i class="fas fa-envelope"></i> Contact Us</a>
+                    <a href="#" onclick="showModal('api')"><i class="fas fa-plug"></i> API</a>
+                    <a href="#" onclick="showModal('faq')"><i class="fas fa-question-circle"></i> FAQ</a>
+                </div>
+                <p class="copyright"><i class="far fa-copyright"></i> 2024 Executor Dashboard - All Rights Reserved</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal container -->
+    <div id="modal-container" class="modal-container">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title">Title</h2>
+            <div id="modal-body">Content goes here</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Thêm hiệu ứng particle cho footer
+        document.addEventListener('DOMContentLoaded', function() {
+            const footer = document.querySelector('.site-footer');
+            
+            // Tạo các particle
+            for (let i = 0; i < 20; i++) {
+                createParticle(footer);
+            }
+            
+            function createParticle(parent) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Vị trí ngẫu nhiên
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                
+                // Kích thước ngẫu nhiên
+                const size = Math.random() * 3 + 1;
+                
+                // Màu ngẫu nhiên
+                const colors = ['rgba(0, 188, 212, ', 'rgba(61, 220, 132, '];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const opacity = Math.random() * 0.5 + 0.1;
+                
+                // Thiết lập style
+                particle.style.left = x + '%';
+                particle.style.top = y + '%';
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.backgroundColor = color + opacity + ')';
+                particle.style.boxShadow = '0 0 ' + (size * 2) + 'px ' + color + '0.8)';
+                
+                // Animation
+                particle.style.animation = 'particleFloat ' + (Math.random() * 10 + 10) + 's infinite ease-in-out';
+                
+                // Thêm vào parent
+                parent.appendChild(particle);
+                
+                // Tạo animation ngẫu nhiên
+                const keyframes = `
+                    @keyframes particleFloat {
+                        0% { transform: translate(0, 0); opacity: ${opacity}; }
+                        25% { transform: translate(${Math.random() * 30 - 15}px, ${Math.random() * 30 - 15}px); opacity: ${opacity + 0.1}; }
+                        50% { transform: translate(${Math.random() * 30 - 15}px, ${Math.random() * 30 - 15}px); opacity: ${opacity - 0.1}; }
+                        75% { transform: translate(${Math.random() * 30 - 15}px, ${Math.random() * 30 - 15}px); opacity: ${opacity + 0.1}; }
+                        100% { transform: translate(0, 0); opacity: ${opacity}; }
+                    }
+                `;
+                
+                const style = document.createElement('style');
+                style.innerHTML = keyframes;
+                document.head.appendChild(style);
+            }
+        });
+
+        // Modal functionality
+        function showModal(type) {
+            const modalContainer = document.getElementById('modal-container');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+            
+            // Set content based on type
+            switch(type) {
+                case 'privacy':
+                    modalTitle.textContent = 'Privacy Policy';
+                    modalBody.innerHTML = `
+                        <p>Last updated: June 2024</p>
+                        <p>Executor Dashboard respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you use our service.</p>
+                        <h3>Information We Collect</h3>
+                        <p>We collect information that you provide directly to us, such as when you create an account, subscribe to our newsletter, or contact us for support.</p>
+                        <h3>How We Use Your Information</h3>
+                        <p>We use the information we collect to provide, maintain, and improve our services, to develop new features, and to protect our users.</p>
+                        <h3>Data Security</h3>
+                        <p>We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
+                    `;
+                    break;
+                case 'terms':
+                    modalTitle.textContent = 'Terms of Service';
+                    modalBody.innerHTML = `
+                        <p>Last updated: June 2024</p>
+                        <p>Welcome to Executor Dashboard. By accessing or using our service, you agree to be bound by these Terms of Service.</p>
+                        <h3>Use of Service</h3>
+                        <p>You may use our service only in compliance with these terms and all applicable laws. You are responsible for maintaining the confidentiality of your account information.</p>
+                        <h3>Intellectual Property</h3>
+                        <p>The service and its original content, features, and functionality are owned by Executor Dashboard and are protected by international copyright, trademark, and other intellectual property laws.</p>
+                        <h3>Termination</h3>
+                        <p>We may terminate or suspend your account and access to the service immediately, without prior notice, for conduct that we believe violates these Terms or is harmful to other users of the service, us, or third parties.</p>
+                    `;
+                    break;
+                case 'contact':
+                    modalTitle.textContent = 'Contact Us';
+                    modalBody.innerHTML = `
+                        <p>I'd love to hear from you! Please use one of the following methods to get in touch:</p>
+                        <h3>Email</h3>
+                        <p><a href="mailto:kazona20052005@gmail.com">kazona20052005@gmail.com</a></p>
+                        <h3>About Me</h3>
+                        <p>I'm Kazona, a developer passionate about creating tools that help the executor community. Feel free to reach out with any questions, suggestions, or collaboration ideas!</p>
+                        <p>I typically respond within 24-48 hours.</p>
+                    `;
+                    break;
+                case 'support':
+                    modalTitle.textContent = 'Support Center';
+                    modalBody.innerHTML = `
+                        <p>Need help with Executor Dashboard? We're here to assist you!</p>
+                        <h3>Common Issues</h3>
+                        <ul>
+                            <li><a href="#">Executor not showing up in dashboard</a></li>
+                            <li><a href="#">Connection problems</a></li>
+                            <li><a href="#">Account management</a></li>
+                            <li><a href="#">Billing questions</a></li>
+                        </ul>
+                        <h3>Support Channels</h3>
+                        <p><strong>Email Support:</strong> <a href="mailto:support@executordashboard.com">support@executordashboard.com</a></p>
+                        <p><strong>Live Chat:</strong> Available Monday-Friday, 9am-5pm PST</p>
+                        <p><strong>Discord Community:</strong> Join our <a href="#" target="_blank">Discord server</a> for community support</p>
+                    `;
+                    break;
+                case 'docs':
+                    modalTitle.textContent = 'Documentation';
+                    modalBody.innerHTML = `
+                        <p>Comprehensive guides and documentation for Executor Dashboard:</p>
+                        <h3>Getting Started</h3>
+                        <ul>
+                            <li><a href="#">Quick Start Guide</a></li>
+                            <li><a href="#">Installation Instructions</a></li>
+                            <li><a href="#">Basic Configuration</a></li>
+                        </ul>
+                        <h3>Advanced Topics</h3>
+                        <ul>
+                            <li><a href="#">API Integration</a></li>
+                            <li><a href="#">Custom Executors</a></li>
+                            <li><a href="#">Security Best Practices</a></li>
+                        </ul>
+                        <h3>Tutorials</h3>
+                        <ul>
+                            <li><a href="#">Video Tutorials</a></li>
+                            <li><a href="#">Step-by-Step Guides</a></li>
+                        </ul>
+                    `;
+                    break;
+                case 'api':
+                    modalTitle.textContent = 'API Credits';
+                    modalBody.innerHTML = `
+                        <div class="api-credits">
+                            <div class="credit-header">
+                                <i class="fas fa-award icon icon-glow" style="color: #FFD700; font-size: 48px; margin-bottom: 20px;"></i>
+                                <h3>Special Thanks to SAMRAT</h3>
+                            </div>
+                            
+                            <div class="credit-content">
+                                <p class="credit-message">I would like to express my deepest gratitude to <strong>SAMRAT</strong> for providing the API that made this Executor Dashboard possible.</p>
+                                
+                                <div class="credit-quote">
+                                    <i class="fas fa-quote-left"></i>
+                                    <p>SAMRAT's API has been instrumental in creating this website, providing essential data about executors including their download links, status information, and other critical details. Without this contribution, this real-time monitoring dashboard would not have been possible.</p>
+                                    <i class="fas fa-quote-right"></i>
+                                </div>
+                                
+                                <div class="credit-details">
+                                    <h4>API Features Provided:</h4>
+                                    <ul>
+                                        <li><i class="fas fa-check-circle"></i> Real-time executor status monitoring (online/offline)</li>
+                                        <li><i class="fas fa-check-circle"></i> Executor download links across multiple platforms</li>
+                                        <li><i class="fas fa-check-circle"></i> Version information and compatibility details</li>
+                                        <li><i class="fas fa-check-circle"></i> Cross-platform executor data (Android, iOS, Windows, macOS)</li>
+                                        <li><i class="fas fa-check-circle"></i> Comprehensive executor metadata and resources</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="api-visualization">
+                                    <div class="api-flow">
+                                        <div class="api-endpoint">
+                                            <i class="fas fa-server"></i>
+                                            <span>SAMRAT's API</span>
+                                        </div>
+                                        <i class="fas fa-arrow-right flow-arrow"></i>
+                                        <div class="api-process">
+                                            <i class="fas fa-exchange-alt"></i>
+                                            <span>Data Processing</span>
+                                        </div>
+                                        <i class="fas fa-arrow-right flow-arrow"></i>
+                                        <div class="api-result">
+                                            <i class="fas fa-desktop"></i>
+                                            <span>Executor Dashboard</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="credit-footer">
+                                <p>Thank you, SAMRAT, for your invaluable API contribution!</p>
+                                <div class="signature">- Kazona</div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'faq':
+                    modalTitle.textContent = 'Frequently Asked Questions';
+                    modalBody.innerHTML = `
+                        <h3>What is Executor Dashboard?</h3>
+                        <p>Executor Dashboard is a comprehensive monitoring and management tool for executors, allowing developers to track status, performance, and availability in real-time.</p>
+                        
+                        <h3>Is Executor Dashboard free to use?</h3>
+                        <p>We offer both free and premium tiers. The free tier includes basic monitoring for up to 5 executors, while premium tiers offer advanced features and support for unlimited executors.</p>
+                        
+                        <h3>How do I add a new executor?</h3>
+                        <p>You can add a new executor by clicking the "Add Executor" button in your dashboard and following the setup instructions.</p>
+                        
+                        <h3>Can I integrate Executor Dashboard with my existing tools?</h3>
+                        <p>Yes! We provide API access and integrations with popular development tools and platforms.</p>
+                        
+                        <h3>How often is the status updated?</h3>
+                        <p>Executor status is updated in real-time with a maximum delay of 60 seconds.</p>
+                    `;
+                    break;
+                case 'blog':
+                    modalTitle.textContent = 'Blog';
+                    modalBody.innerHTML = `
+                        <div class="blog-post">
+                            <h3>New Features: June 2024 Update</h3>
+                            <p class="post-meta">Posted on June 15, 2024 by Admin</p>
+                            <p>We're excited to announce our latest features including improved real-time monitoring, enhanced UI, and new integration options...</p>
+                            <a href="#">Read More</a>
+                        </div>
+                        
+                        <div class="blog-post">
+                            <h3>Best Practices for Executor Management</h3>
+                            <p class="post-meta">Posted on May 28, 2024 by Admin</p>
+                            <p>Learn how to optimize your executor setup with these proven strategies and best practices...</p>
+                            <a href="#">Read More</a>
+                        </div>
+                        
+                        <div class="blog-post">
+                            <h3>Case Study: How Company X Improved Performance by 200%</h3>
+                            <p class="post-meta">Posted on May 10, 2024 by Admin</p>
+                            <p>Discover how Company X leveraged Executor Dashboard to dramatically improve their system performance...</p>
+                            <a href="#">Read More</a>
+                        </div>
+                        
+                        <p><a href="#" class="btn">View All Posts</a></p>
+                    `;
+                    break;
+                default:
+                    modalTitle.textContent = 'Information';
+                    modalBody.textContent = 'Content coming soon!';
+            }
+            
+            // Show the modal
+            modalContainer.style.display = 'flex';
+            
+            // Add animation class
+            setTimeout(() => {
+                modalContainer.classList.add('show');
+            }, 10);
+        }
+        
+        // Close modal when clicking the X
+        document.querySelector('.close-modal').addEventListener('click', closeModal);
+        
+        // Close modal when clicking outside the content
+        document.getElementById('modal-container').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+        
+        function closeModal() {
+            const modalContainer = document.getElementById('modal-container');
+            modalContainer.classList.remove('show');
+            setTimeout(() => {
+                modalContainer.style.display = 'none';
+            }, 300);
+        }
+    </script>
+</body>
+</html>
+
+
+
+
