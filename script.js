@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Cập nhật URL API
     const API_URL = '/api/executors';
     const executorsList = document.getElementById('executors-list');
     const totalCount = document.getElementById('total-count');
@@ -102,7 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             filterAndRenderExecutors();
         } catch (error) {
+            console.error('Error fetching data:', error);
             executorsList.innerHTML = '<p class="loading">Error loading executors. Please try again later.</p>';
+            
+            // Thử lại sau 10 giây
+            setTimeout(fetchExecutors, 10000);
         }
     }
 
@@ -379,6 +384,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+
 
 
 
