@@ -27,7 +27,7 @@ app.get('/api/executors', async (req, res) => {
             return res.json(cachedData);
         }
 
-        const response = await axios.get('http://67.220.85.146:6175/api/all', {
+        const response = await axios.get('http://node1.lunes.host:2287/api/all', {
             timeout: 5000 // 5 second timeout
         });
         
